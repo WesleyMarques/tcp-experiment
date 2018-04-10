@@ -1,0 +1,13 @@
+shim: {
+  'lib/jquery' : {
+    exports: 'jQuery',
+    init: function() {
+    	return this.jQuery.noConflict();
+    }
+  },
+  'lib/jquery.simplePlugin' : {
+    deps: ['lib/jquery'],
+    exports: 'jQuery.fn.datepicker'
+  },
+  'specs/lib/jasmine-jquery' : ['lib/jquery']
+}

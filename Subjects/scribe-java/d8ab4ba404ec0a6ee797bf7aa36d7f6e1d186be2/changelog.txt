@@ -1,0 +1,32 @@
+[1.0.6]
+
+ * FEATURE: Available in maven central repositories.
+
+[1.0.7]
+
+ * FEATURE: Added support for Yammer and Evernote ( thanks oparrsih )
+ * FIX: Fixed bug that preventing setting the scope param on Google Api  
+
+[1.0.8]
+
+ * FEATURE: Added setConnectTimeout and setReadTimeout for the Request Object
+ * FIX: Fixed Evernote Api (uses GET for request and access tokens)
+ * REFACTOR: URLEncoding stuff. LinkedIn specific decoder is no longer needed
+ * FEATURE: Added Google example
+
+[1.0.9]
+
+ * FEATURE: Token made Serializable
+ * FIX: Google Api encoding issues (thanks @roger and @klakegg)
+
+[1.1.0]
+
+  * FEATURE: OAuth 2.0 Support and Facebook support out of the box (thanks Diego Silveira)
+  * REFACTOR: Api creation and OAuthService refactors
+  * REFACTOR: Connections are created lazily (just before sending the request)
+
+[1.1.1]
+
+  * FIX: Removed isEmpty() from OAuth2.0 code in order to support older JVMs
+  * FEATURE: Overloaded provider() method to support instances as well as classes (thanks dustismo)
+  * FIX: White-space parameter bug (thanks Krogoth)

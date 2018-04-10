@@ -1,0 +1,15 @@
+For the next release
+--------------------
+
+preparing 1.0M1 release ... 
+
+1.0M1 release notes 
+-------------------
+
+New features :
+
+Improvement :
+
+Bug :
+
+Refactoring 
