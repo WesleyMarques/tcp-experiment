@@ -1,6 +1,0 @@
-Bundle-Name: com.notnoop.apns
-Bundle-ManifestVersion: 2
-Import-Template: 
- org.slf4j.*;version="0",
- org.codehaus.jackson.*;version="0",
- javax.net.*;version="0"
