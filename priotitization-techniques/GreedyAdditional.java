@@ -40,7 +40,7 @@ public class GreedyAdditional {
 				}
 				tempAl.add(line);
 			}
-			this.CoverageMatrix = new char[tempAl.size()][columnNum]; //Initialize the Coverage Matrix.
+			this.CoverageMatrix = new char[tempAl.size()][columnNum]; //Initialize the Coverage Matrix. #cov_criterio vs #tests
 
 			//Store the information in the ArrayList to the Array.
 			for(int i=0; i<tempAl.size(); i++){
@@ -65,6 +65,8 @@ public class GreedyAdditional {
 		return num;
 	}
 	//Calculate the number of additional '1' in the array.
+	// o array recebido é uma linha com o tipo de coverage vs testes
+	// retorna o número de testes que cobrem o trecho de código a[]
 	public int getCoveredNumber(char[] a){
 		int num = 0;
 		for(int i=0; i<a.length; i++){
@@ -79,7 +81,7 @@ public class GreedyAdditional {
 
 		this.getCoverageMatrix(this.coverageFile);
 
-		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length;
+		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length; //len = numero de coverageType, columnNum = número de testes
 		int[] selectedTestSequence = new int[len];
 		int[] coveredNum = new int[len];
 		ArrayList<Integer> selected = new ArrayList<Integer>(); //Store the elements that are already selected.
@@ -89,7 +91,7 @@ public class GreedyAdditional {
 		for(int i=0; i<len; i++){
 			coveredNum[i] = this.getCoveredNumber(this.CoverageMatrix[i]);
 			if(coveredNum[i] == 0){
-				coveredZero.add(i);
+				coveredZero.add(i);//trechos de códigos que não são cobertos
 			}
 		}
 		int[] originalCoveredNum = Arrays.copyOf(coveredNum, len); //Copy of coveredNum, for the remaining elements.
@@ -99,7 +101,7 @@ public class GreedyAdditional {
 		//this.Print(coveredNum);
 		while(selected.size() < len){
 
-			int maxIndex = this.selectMax(coveredNum);
+			int maxIndex = this.selectMax(coveredNum);// retorna o testes que mais cobre o statement/branch/method
 			if(maxIndex == -1){//All the statements/methods/branches are covered, then use the same algorithm for the left test cases.
 				if(selected.size() == len) break;
 				coveredNum = Arrays.copyOf(originalCoveredNum, len);

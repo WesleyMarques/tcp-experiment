@@ -14,7 +14,6 @@ except NameError:
 def convertTime(value):
     return int(value.replace("ms", ""))
 
-
 PATH = os.getcwd()
 os.chdir(PATH)
 projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor", "jasmine-maven-plugin", "assertj-core"]
