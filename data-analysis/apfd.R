@@ -16,11 +16,11 @@ library(cluster)
 library(ggdendro)
 require(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
 require(PMCMR)
-
-colorder <- c( "blue", "green", "orange", "red")
+algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
+colorder <- c( "blue", "green", "orange", "red", "brown")
 
 data_apfd <- read_csv("data/dataframe_apfd.data")
-data_apfd$algorithm = factor(data_apfd$algorithm, levels=c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch"))
+data_apfd$algorithm = factor(data_apfd$algorithm, levels=algorithm_list)
 
 data_apfd %>%
   group_by(project, version) %>%
@@ -30,13 +30,13 @@ data_apfd %>%
 
 #Distribuição dos grupos de faltas para cada tipo de cobertura
 data_apfd %>%
-  # filter(covLevel == "statement") %>%
+  filter(covLevel == "statement") %>%
   mutate(project = paste(project,"(stmt)", sep="")) %>%
   ggplot(aes(y=apfd, fill=algorithm)) +
   geom_boxplot(aes(x = version),outlier.colour="red")+
   ylab("APFD")+
   xlab("Versions")+
-  # scale_fill_manual(values=colorder,name="Algorithms")+
+  scale_fill_manual(values=colorder,name="Algorithms")+
   facet_wrap(~project, scales = "free")
 
 data_apfd %>%
@@ -133,8 +133,8 @@ for(proj in unique(data_apfd$project)){
   }
 }
 
-colorder <- c( "blue","blue","blue", "green","green","green", "orange","orange","orange", "red","red","red")
-result_apfd$algorithm = factor(result_apfd$algorithm, levels=c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch"))
+colorder <- c( "blue","blue","blue", "green","green","green", "orange","orange","orange", "red","red","red", "brown","brown","brown")
+result_apfd$algorithm = factor(result_apfd$algorithm, levels=algorithm_list)
 result_apfd$covType = factor(result_apfd$covType, levels=c("statement","branch","method"))
 result_apfd <- result_apfd %>%
   mutate(xMedian=(X2.5.+X97.5.)/2, algBase = gsub("-\\S*", "", algorithm))
