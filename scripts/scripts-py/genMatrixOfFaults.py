@@ -18,23 +18,23 @@ PATH = os.getcwd()
 os.chdir(PATH)
 projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor", "jasmine-maven-plugin", "assertj-core"]
 covLevel = ["statement", "method", "branch"]
-algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional"]
+algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalNew", "AdditionalTotal"][2:]
 projectName = projects[int(sys.argv[1])]
 covType = covLevel[int(sys.argv[2])]
 METRIC = sys.argv[3]
 
 print "START===> "+projectName
-versions = open(projectName+"/coverage/sorted_version.txt")
+versions = open(PATH+"/data/"+projectName+"/coverage/sorted_version.txt")
 for version in versions:
     version = version.replace("\n", "")
-    with open(projectName+"/coverage/"+version+"/priorization_"+covType+".json") as data_file:
+    with open(PATH+"/data/"+projectName+"/coverage/"+version+"/priorization_"+covType+".json") as data_file:
         priorizationTests = json.load(data_file)
 
-    faultGroups = open(projectName+"/faults-groups/"+version+"/faults-groups.data", "r")
+    faultGroups = open(PATH+"/data/"+projectName+"/faults-groups/"+version+"/faults-groups.data", "r")
     faultGroupsLen = sum(1 for line in faultGroups)
 
     #Get schedule of test execution
-    testsFile = open(projectName+"/coverage/"+version+"/running_time.txt", "r")
+    testsFile = open(PATH+"/data/"+projectName+"/coverage/"+version+"/running_time.txt", "r")
     testMat = []
     testMatTime = []
     testLen = 0;
@@ -50,7 +50,7 @@ for version in versions:
     fullMat = [[0 for x in range(faultGroupsLen)] for y in range(testLen)]
 
     #Get all groups of Faults
-    faultGroups = open(projectName+"/faults-groups/"+version+"/faults-groups.data", "r")
+    faultGroups = open(PATH+"/data/"+projectName+"/faults-groups/"+version+"/faults-groups.data", "r")
     fGroups = []
     for index,faults in enumerate(faultGroups):
         faults = faults.replace("\n", "")
@@ -60,7 +60,7 @@ for version in versions:
     #end
 
     tests2Mut = {}
-    testsFile = open(projectName+"/faults-groups/"+version+"/test-mut.data", "r")
+    testsFile = open(PATH+"/data/"+projectName+"/faults-groups/"+version+"/test-mut.data", "r")
     for testMut in testsFile:
         testMut = testMut.replace("\n", "")
         splitLine = testMut.split(" ")
@@ -71,12 +71,7 @@ for version in versions:
         tests2Mut[testName] = mutants #testName identify mutants
 
     gSize = len(fGroups[0])
-    metricResult = {
-    "ARTMaxMin":[],
-    "Genetic":[],
-    "GreedyTotal":[],
-    "GreedyAdditional":[]
-    }
+    metricResult = {}
     for groupTime in fGroups:
         tempArr = [[0 for x in range(gSize)] for y in range(testLen)]
         flag = False
@@ -90,6 +85,8 @@ for version in versions:
         if not flag:
             continue
         for alg in algorithms:
+            if alg not in metricResult:
+                    metricResult[alg] = []
             additional = priorizationTests[alg]
             TESTES_PRIOR = list(map(int, additional.split(",")))
             if METRIC == "apfd":
@@ -103,7 +100,7 @@ for version in versions:
                 metricResult[alg].append(time)
             elif METRIC == "group-spreading":
                 metricResult[alg].append((calc_metrics.genGroupSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)))
-    with open(projectName+"/faults-groups/"+version+"/"+METRIC+"_"+covType+".json", 'w') as outfile:
+    with open(PATH+"/data/"+projectName+"/faults-groups/"+version+"/"+METRIC+"_"+covType+".json", 'w') as outfile:
         str_ = json.dumps(metricResult,indent=4,sort_keys=True,separators=(',',':'), ensure_ascii=False)
         outfile.write(to_unicode(str_))
         outfile.close()

@@ -18,10 +18,11 @@ library(ggdendro)
 require(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
 require(PMCMR)
 
-colorder <- c( "blue", "green", "orange", "red")
+colorder <- c( "blue", "green", "orange", "red", "brown")
+algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
 
-data_mSpreading <- read_csv("data/dataframe_mean_spreading.data")
-data_mSpreading$algorithm = factor(data_mSpreading$algorithm, levels=c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch"))
+data_mSpreading <- read_csv("data/dataframe_mean_spreading_2.data")
+data_mSpreading$algorithm = factor(data_mSpreading$algorithm, levels=algorithm_list)
 
 data_mSpreading %>%
   group_by(project, version, algorithm, covLevel) %>%
@@ -152,8 +153,8 @@ for(proj in unique(data_mSpreading$project)){
 }
 
 #Data frame dos intervalos de confiança com todos os critérios de cobertura
-colorder <- c( "blue","blue","blue", "green","green","green", "orange","orange","orange", "red","red","red")
-result_mSpreading$algorithm = factor(result_mSpreading$algorithm, levels=c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch"))
+colorder <- c( "blue","blue","blue", "green","green","green", "orange","orange","orange", "red","red","red", "brown", "brown", "brown")
+result_mSpreading$algorithm = factor(result_mSpreading$algorithm, levels=algorithm_list)
 result_mSpreading %>%
   ggplot(aes(x = algorithm, ymin = X2.5., ymax = X97.5., shape=factor(covType)))+
   geom_errorbar(aes(width = 1, color=algorithm), size=0.5, position=position_dodge(width = 0.8)) +

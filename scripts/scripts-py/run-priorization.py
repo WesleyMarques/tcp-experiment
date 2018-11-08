@@ -23,26 +23,21 @@ PATH = os.getcwd()
 os.chdir(PATH)
 
 projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"]
-algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional"]
+algorithms = [str(sys.argv[3])] if len(sys.argv) > 3 else ["GreedyTotal", "GreedyAdditional", "GreedyAdditionalNew", "AdditionalTotal"]
 covLevel = ["statement", "method", "branch"]
-
-# compile_java("./algoritmos2priorize/ARTMaxMin.java")
-# compile_java("./algoritmos2priorize/Genetic.java")
-# compile_java("./algoritmos2priorize/GreedyTotal.java")
-# compile_java("./algoritmos2priorize/GreedyAdditional.java")
 
 project = projects[int(sys.argv[1])]
 coverage = covLevel[int(sys.argv[2])]
 print "START",project, coverage
-versions = open(project+"/coverage/sorted_version.txt")
+versions = open(PATH+"/data/"+project+"/coverage/sorted_version.txt")
 for version in versions:
     version = version.replace("\n", "")
     values = {}
-    for algorithm in algorithms[:4]:
-        priorization = execute_java(algorithm, project+"/coverage/"+version+"/", coverage+"_matrix.txt")
+    for algorithm in algorithms:
+        priorization = execute_java(algorithm, PATH+"/data/"+project+"/coverage/"+version+"/", coverage)
         values[algorithm] = priorization
 
-    with open(project+"/coverage/"+version+"/priorization_"+coverage+".json", 'w+') as outfile:
+    with open(PATH+"/data/"+project+"/coverage/"+version+"/priorization_"+coverage+".json", 'w+') as outfile:
         str_ = json.dumps(values,indent=4,sort_keys=True,separators=(',',':'), ensure_ascii=False)
         outfile.write(to_unicode(str_))
         outfile.close()
