@@ -77,14 +77,14 @@ public class Genetic {
 			String line;
 			//Read all the rows from the Coverage Matrix and store then in an ArrayList for further process.
 			while((line = br.readLine()) != null){
-				//System.out.println(line+"\n");
+				line = removeColumns(line, indexTest);
 				if(columnNum == 0){
 					columnNum = line.length();
 				}else if(columnNum != line.length()){
 					System.out.println("ERROR: The line from Coverage Matrix File is WORNG.\n"+line);
 					System.exit(1);
 				}
-				tempAl.add(removeColumns(line, indexTest));
+				tempAl.add(line);
 			}
 			this.CoverageMatrix = new char[tempAl.size()][columnNum]; //Initialize the Coverage Matrix.
 			this.GenesNum = tempAl.size(); //Initialize the GenesNum, which is the Test Case Number.
