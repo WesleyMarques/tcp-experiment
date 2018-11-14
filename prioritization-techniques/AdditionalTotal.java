@@ -66,13 +66,14 @@ public class AdditionalTotal {
 			// Read all the rows from the Coverage Matrix and store then in an
 			// ArrayList for further process.
 			while ((line = br.readLine()) != null) {
+				line = removeColumns(line, indexTest);
 				if (columnNum == 0) {
 					columnNum = line.length();
 				} else if (columnNum != line.length()) {
 					System.out.println("ERROR: The line from Coverage Matrix File is WORNG.\n" + line);
 					System.exit(1);
 				}
-				tempAl.add(removeColumns(line, indexTest));
+				tempAl.add(line);
 			}
 			this.CoverageMatrix = new char[tempAl.size()][columnNum];
 
@@ -103,7 +104,7 @@ public class AdditionalTotal {
 
 	public int[] getSelectedTestSequence(){
 		this.getCoverageMatrix(coverageFile);
-		int m = this.CoverageMatrix.length, n = this.CoverageMatrix[0].length; //len = numero de coverageType, columnNum = número de testes
+		int n = this.CoverageMatrix.length, m = this.CoverageMatrix[0].length; //m = numero de coverageType, n = número de testes
 		this.initialize(n, m);
 		int k, sum, s;
 		for (int i = 0; i < n; i++) {
@@ -113,7 +114,7 @@ public class AdditionalTotal {
 			}
 			sum = 0;
 			for (int j = 0; j < m; j++) {
-				if(this.CoverageMatrix[j][k] == '1'){
+				if(this.CoverageMatrix[k][j] == '1'){
 					sum += this.prob[j];
 				}
 			}
@@ -122,7 +123,7 @@ public class AdditionalTotal {
 				if(!this.selected[l]){
 					s = 0;
 					for (int j = 0; j < m; j++) {
-						if(this.CoverageMatrix[j][l] == '1'){
+						if(this.CoverageMatrix[l][j] == '1'){
 							s += this.prob[j];
 						}
 					}
@@ -134,14 +135,13 @@ public class AdditionalTotal {
 			}
 			this.priority[i] = k;
 			this.selected[k] = true;
-			for (int j = 0; j < m; j++) {
+			for (int j = 0; j < n; j++) {
 				if(this.CoverageMatrix[j][k] == '1'){
 					this.prob[j] *= (1-0.8);
 				}
 			}
 		}
 		return this.priority;
-
 	}
 
 	public void print(int[] a){
@@ -156,8 +156,9 @@ public class AdditionalTotal {
 
 	public static void main(String[] args) {
 		AdditionalTotal ga = new AdditionalTotal(args[0], args[1]);
-//		String path = "/home/wesleynunes/Documentos/workspaceMastering/tcp-experiment/data/java-apns/coverage/0c13a8626967d4b4cfacab4afbcd840ee714ead8";
-//		String coverageStatement = "method_matrix.txt";
+//		
+//		String path = "/home/wesleynunes/Documentos/workspaceMastering/tcp-experiment/data/scribe-java/coverage/6ae769e35e8319747a702a4962df31650303a98e";
+//		String coverageStatement = "method";
 //		AdditionalTotal ga = new AdditionalTotal(path, coverageStatement);
 		int[] priorization = ga.getSelectedTestSequence();
 		ga.print(priorization);

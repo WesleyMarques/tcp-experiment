@@ -9,7 +9,6 @@ try:
 except NameError:
     to_unicode = str
 
-print sys.argv
 with open(sys.argv[1]) as data_file_xml:
     jacocoFile = xmltodict.parse(data_file_xml, process_namespaces=True)
 with open("./jacoco.json", 'w') as jsonFile:
@@ -31,7 +30,7 @@ for package in packages:
         for method in packClass["method"]:
             params = re.sub("[L]([a-z]+[/])+", "Q", method["@desc"], flags=re.IGNORECASE)
             methSign = "%s.%s:%s" % (className, method["@name"], params)
-            result.append("%s:%s" % (methSign, method["counter"][2]["@covered"]))
+            result.append("%s:%s" % (methSign, (method["counter"][2]["@covered"] + method["counter"][2]["@missed"])))
 
 
 with open("./method-complexity.txt", 'w') as methComplex:
