@@ -147,7 +147,7 @@ public class AdditionalTotal {
 
 	public int[] getSelectedTestSequence(){
 		this.getCoverageMatrix(coverageFile);
-		int n = this.CoverageMatrix.length, m = this.CoverageMatrix[0].length; //m = numero de coverageType, n = número de testes
+		int n = this.CoverageMatrix.length, m = this.CoverageMatrix[0].length; //m = numero de coverageType, n = numero de testes
 		this.initialize(n, m);
 		int k, sum, s;
 		for (int i = 0; i < n; i++) {
