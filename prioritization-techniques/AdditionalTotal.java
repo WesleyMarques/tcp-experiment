@@ -180,7 +180,7 @@ public class AdditionalTotal {
 			this.selected[k] = true;
 			for (int j = 0; j < m; j++) {
 				if(this.CoverageMatrix[k][j] == '1'){
-					this.prob[j] *= (1-getProb(k));
+					this.prob[j] *= (1-getProb(j));
 				}
 			}
 		}

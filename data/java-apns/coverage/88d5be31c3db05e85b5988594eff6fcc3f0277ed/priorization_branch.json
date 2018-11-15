@@ -1,5 +1,5 @@
 {
-    "AdditionalTotal":"Exception in thread \"main\" java.lang.ArrayIndexOutOfBoundsException: 11\n\tat AdditionalTotal.getSelectedTestSequence(AdditionalTotal.java:183)\n\tat AdditionalTotal.main(AdditionalTotal.java:210)\n",
+    "AdditionalTotal":"4,11,0,1,2,3,5,6,7,8,9,10,12,13,14,15",
     "GreedyAdditional":"4,11,0,1,2,3,5,6,7,8,9,10,12,13,14,15",
     "GreedyAdditionalNew":"4,12,11,0,1,2,3,5,6,7,8,9,10,13,14,15",
     "GreedyTotal":"4,11,0,1,2,3,5,6,7,8,9,10,12,13,14,15"
