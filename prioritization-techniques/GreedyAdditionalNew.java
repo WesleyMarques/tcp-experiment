@@ -122,7 +122,7 @@ public class GreedyAdditionalNew {
 
 		this.getCoverageMatrix(this.coverageFile);
 
-		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length; //len = numero de coverageType, columnNum = número de testes
+		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length; //len = numero de coverageType, columnNum = numero de testes
 		int[] selectedTestSequence = new int[len];
 		int[] coveredNum = new int[len];
 		ArrayList<Integer> selected = new ArrayList<Integer>(); //Store the elements that are already selected.
@@ -134,7 +134,7 @@ public class GreedyAdditionalNew {
 			testCoverageList.put(i, coveredList);
 			coveredNum[i] = coveredList.size();
 			if(coveredNum[i] == 0){
-				coveredZero.add(i);//trechos de códigos que não são cobertos
+				coveredZero.add(i);//trechos de codigos que nao sao cobertos
 			}
 		}
 		int[] originalCoveredNum = Arrays.copyOf(coveredNum, len); //Copy of coveredNum, for the remaining elements.
