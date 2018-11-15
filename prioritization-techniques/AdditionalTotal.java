@@ -3,19 +3,60 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class AdditionalTotal {
 	String Directory;
 	String matrixFile;
-	String coverageFile;
-	String codeLinesFile;
+	String coverageFile, complexityFile, codeLinesFile;
 	char[][] CoverageMatrix;
 	final String sep = File.separator;
 	char[] currentCovered;
 	int[] prob, priority;
+	List<Integer> methodComplexity;
+	int maxComplexity;
 	private boolean[] selected;
+
+	private ArrayList<Integer> getCodeComplexity(int methodSize) throws IOException{
+		BufferedReader br_code;
+		BufferedReader br_complexity;
+		Map <String, Integer> complexityMap = new HashMap<String, Integer>();
+		ArrayList<Integer> result = new ArrayList<Integer>(Collections.nCopies(methodSize, 0));
+		try{
+			br_code = new BufferedReader(new FileReader(codeLinesFile));
+			br_complexity = new BufferedReader(new FileReader(codeLinesFile));
+		}catch(Exception ex){
+			return result;
+		}
+		maxComplexity = 0;
+		int complexityValue = 0;
+		String methodName;
+		String[] lineSplit;
+		String line;
+		while((line = br_complexity.readLine()) != null){
+			lineSplit = line.split(":");
+			complexityValue = Integer.parseInt(lineSplit[lineSplit.length-1]);
+			methodName = String.join(":", Arrays.copyOfRange(lineSplit, 0, lineSplit.length - 1));
+			complexityMap.put(String.join(":", methodName), complexityValue);
+			if(complexityValue > maxComplexity){
+				maxComplexity = complexityValue;
+			}
+		}
+		while((line = br_code.readLine()) != null){
+			lineSplit = line.split(":");
+			methodName = String.join(":", Arrays.copyOfRange(lineSplit, 0, lineSplit.length - 1));
+			if(complexityMap.containsKey(methodName)){
+				result.add(complexityMap.get(methodName));
+			}else{
+				result.add(0);
+			}
+		}
+		return result;
+	}
 
 	private ArrayList<Integer> removeTestLines() throws NumberFormatException, IOException{
 		String line;
@@ -52,6 +93,7 @@ public class AdditionalTotal {
 										// prefix for Statistic Data.
 		this.coverageFile = Directory+this.sep+matrixFile+"_matrix.txt";
 		this.codeLinesFile = Directory+this.sep+matrixFile+"_index.txt";
+		this.complexityFile = Directory+this.sep+"method-complexity.txt";
 	}
 
 	// Read the Coverage File and Store the value to the APBC, APDC or APSC
@@ -84,6 +126,7 @@ public class AdditionalTotal {
 
 			this.currentCovered = new char[columnNum]; // Initialized the global
 														// currentCovered.
+			this.methodComplexity = getCodeComplexity(columnNum);
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,11 +180,15 @@ public class AdditionalTotal {
 			this.selected[k] = true;
 			for (int j = 0; j < n; j++) {
 				if(this.CoverageMatrix[j][k] == '1'){
-					this.prob[j] *= (1-0.8);
+					this.prob[j] *= (getProb(k));
 				}
 			}
 		}
 		return this.priority;
+	}
+
+	private float getProb(int methodIndex){
+		return (float)1 - (float)(0.5 * (this.methodComplexity.get(methodIndex)/Math.max(this.maxComplexity,1)));
 	}
 
 	public void print(int[] a){
@@ -156,7 +203,7 @@ public class AdditionalTotal {
 
 	public static void main(String[] args) {
 		AdditionalTotal ga = new AdditionalTotal(args[0], args[1]);
-//		
+//
 //		String path = "/home/wesleynunes/Documentos/workspaceMastering/tcp-experiment/data/scribe-java/coverage/6ae769e35e8319747a702a4962df31650303a98e";
 //		String coverageStatement = "method";
 //		AdditionalTotal ga = new AdditionalTotal(path, coverageStatement);
