@@ -98,8 +98,8 @@ public class GreedyAdditional {
 		return num;
 	}
 	//Calculate the number of additional '1' in the array.
-	// o array recebido é uma linha com o tipo de coverage vs testes
-	// retorna o número de testes que cobrem o trecho de código a[]
+	// o array recebido eh uma linha com o tipo de coverage vs testes
+	// retorna o numero de testes que cobrem o trecho de codigo a
 	public int getCoveredNumber(char[] a){
 		int num = 0;
 		for(int i=0; i<a.length; i++){
@@ -114,7 +114,7 @@ public class GreedyAdditional {
 
 		this.getCoverageMatrix(this.coverageFile);
 
-		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length; //len = numero de coverageType, columnNum = número de testes
+		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length; //len = numero de coverageType, columnNum = numero de testes
 		int[] selectedTestSequence = new int[len];
 		int[] coveredNum = new int[len];
 		ArrayList<Integer> selected = new ArrayList<Integer>(); //Store the elements that are already selected.
@@ -124,7 +124,7 @@ public class GreedyAdditional {
 		for(int i=0; i<len; i++){
 			coveredNum[i] = this.getCoveredNumber(this.CoverageMatrix[i]);
 			if(coveredNum[i] == 0){
-				coveredZero.add(i);//trechos de códigos que não são cobertos
+				coveredZero.add(i);//trechos de codigos que nao sao cobertos
 			}
 		}
 		int[] originalCoveredNum = Arrays.copyOf(coveredNum, len); //Copy of coveredNum, for the remaining elements.

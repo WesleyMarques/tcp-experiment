@@ -106,8 +106,8 @@ public class GreedyAdditionalNew {
 		return num;
 	}
 	//Calculate the number of additional '1' in the array.
-	// o array recebido é uma linha com o tipo de coverage vs testes
-	// retorna o número de testes que cobrem o trecho de código a[]
+	// o array recebido e uma linha com o tipo de coverage vs testes
+	// retorna o numero de testes que cobrem o trecho de codigo a[]
 	public List<Integer> getCoveredNumber(char[] a){
 		List<Integer> result = new ArrayList<Integer>();
 		for(int i=0; i<a.length; i++){

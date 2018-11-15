@@ -455,7 +455,7 @@ public class Genetic {
 	}
 
 	public int[] KnuthShuffle(int[] a ){
-			//Use  Fisher–Yates shuffle(Knuth Shuffle).
+			//Use  Fisher Yates shuffle(Knuth Shuffle).
 			int[] originalArray = Arrays.copyOf(a, a.length);
 			Random rnd = new Random();
 		    for (int i = originalArray.length - 1; i > 0; i--)
