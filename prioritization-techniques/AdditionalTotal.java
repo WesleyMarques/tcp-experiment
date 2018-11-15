@@ -178,9 +178,9 @@ public class AdditionalTotal {
 			}
 			this.priority[i] = k;
 			this.selected[k] = true;
-			for (int j = 0; j < n; j++) {
-				if(this.CoverageMatrix[j][k] == '1'){
-					this.prob[j] *= (getProb(k));
+			for (int j = 0; j < m; j++) {
+				if(this.CoverageMatrix[k][j] == '1'){
+					this.prob[j] *= (1-getProb(k));
 				}
 			}
 		}
