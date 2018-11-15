@@ -30,7 +30,7 @@ for package in packages:
         for method in packClass["method"]:
             params = re.sub("[L]([a-z]+[/])+", "Q", method["@desc"], flags=re.IGNORECASE)
             methSign = "%s.%s:%s" % (className, method["@name"], params)
-            result.append("%s:%s" % (methSign, (method["counter"][2]["@covered"] + method["counter"][2]["@missed"])))
+            result.append("%s:%s" % (methSign, int(method["counter"][2]["@covered"]) + int(method["counter"][2]["@missed"])))
 
 
 with open("./method-complexity.txt", 'w') as methComplex:
