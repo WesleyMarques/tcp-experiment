@@ -19,9 +19,10 @@ require(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
 require(PMCMR)
 
 colorder <- c( "blue", "green", "orange", "red", "brown")
-algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
+# algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
+algorithm_list <- c("AdditionalTotal-statement","AdditionalTotal-branch","AdditionalTotal-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
 
-data_mSpreading <- read_csv("data/dataframe_mean_spreading_2.data")
+data_mSpreading <- read_csv("data/dataframe_mean_spreading.data")
 data_mSpreading$algorithm = factor(data_mSpreading$algorithm, levels=algorithm_list)
 
 data_mSpreading %>%
@@ -138,19 +139,19 @@ result_mSpreading = data.frame(project=character(),
                          covType=character())
 
 #Geração dos intervalos de confiaça para cada nível de cobertura
-for(proj in unique(data_mSpreading$project)){
-  for(alg in unique(data_mSpreading$algorithm)){
-    result <- data_mSpreading %>%
-      filter(project==proj, algorithm==alg) %>%
-      resample::bootstrap(mean(meanSpreading), R = 5000) %>%
-      CI.percentile(probs = c(.025, .975))
-    result <- data.frame(result)
-    result$algorithm = alg
-    result$project = proj
-    result$covType = gsub("\\S*-", "", alg)
-    result_mSpreading <- rbind(result_mSpreading, result)
+  for(proj in unique(data_mSpreading$project)){
+    for(alg in unique(data_mSpreading$algorithm)){
+      result <- data_mSpreading %>%
+        filter(project==proj, algorithm==alg) %>%
+        resample::bootstrap(mean(meanSpreading), R = 5000) %>%
+        CI.percentile(probs = c(.025, .975))
+      result <- data.frame(result)
+      result$algorithm = alg
+      result$project = proj
+      result$covType = gsub("\\S*-", "", alg)
+      result_mSpreading <- rbind(result_mSpreading, result)
+    }
   }
-}
 
 #Data frame dos intervalos de confiança com todos os critérios de cobertura
 colorder <- c( "blue","blue","blue", "green","green","green", "orange","orange","orange", "red","red","red", "brown", "brown", "brown")
@@ -205,6 +206,7 @@ rank_mSpreadning <- function(data){
 
 for(proj in unique(result_mSpreading$project)){
   projectOrdered <- result_mSpreading %>%
+    mutate(mspre)
     filter(project == proj) %>% 
     arrange(X2.5.)
   print("==============================================")
