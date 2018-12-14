@@ -19,8 +19,8 @@ require(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
 require(PMCMR)
 
 colorder <- c( "blue", "green", "orange", "red", "brown")
-# algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
-algorithm_list <- c("AdditionalTotal-statement","AdditionalTotal-branch","AdditionalTotal-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","AdditionalNew-statement","AdditionalNew-method","AdditionalNew-branch")
+# algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalSimilarity-statement","AdditionalSimilarity-method","AdditionalSimilarity-branch")
+algorithm_list <- c("AdditionalTotal-statement","AdditionalTotal-branch","AdditionalTotal-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","AdditionalSimilarity-statement","AdditionalSimilarity-method","AdditionalSimilarity-branch")
 
 data_mSpreading <- read_csv("data/dataframe_mean_spreading.data")
 data_mSpreading$algorithm = factor(data_mSpreading$algorithm, levels=algorithm_list)
@@ -206,7 +206,6 @@ rank_mSpreadning <- function(data){
 
 for(proj in unique(result_mSpreading$project)){
   projectOrdered <- result_mSpreading %>%
-    mutate(mspre)
     filter(project == proj) %>% 
     arrange(X2.5.)
   print("==============================================")
