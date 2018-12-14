@@ -118,7 +118,7 @@ public class GreedyAdditionalSimilarity {
 		}
 		return num;
 	}
-	
+
 	public List<Integer> getCoveredIndexes(char[] a){
 		List<Integer> indexes = new ArrayList<>();
 		for(int i=0; i<a.length; i++){
@@ -133,8 +133,8 @@ public class GreedyAdditionalSimilarity {
 
 		this.getCoverageMatrix(this.coverageFile);
 		this.getTestSimilarity();
-		
-		int lenTests = this.CoverageMatrix.length, 
+
+		int lenTests = this.CoverageMatrix.length,
 			lenUnits = this.CoverageMatrix[0].length;
 		int[] selectedTestSequence = new int[lenTests];
 		int[] unitsCoveredByTest = new int[lenTests];
@@ -169,7 +169,7 @@ public class GreedyAdditionalSimilarity {
 			originalUnitsCoveredByTest[maxTestCoveringIndex] = 0;
 			//selectedTestSequence[i] = maxIndex;
 			testsSelected.add(maxTestCoveringIndex);
-			int testsSelectedTemp[] = new int[lenTests]; 
+			int testsSelectedTemp[] = new int[lenTests];
 			for (int i = 0; i < this.testSimilarity[maxTestCoveringIndex].length; i++) {
 				if(i == maxTestCoveringIndex || testsSelected.contains(i)) continue;
 				if(this.testSimilarity[maxTestCoveringIndex][i] >= 0.5){
@@ -227,7 +227,7 @@ public class GreedyAdditionalSimilarity {
 
 		return index;
 	}
-	
+
 	//Merge all the '1's in the new array into the current array.
 	public void mergeIntoCurrentArray(char[] current, char[] newArray){
 		if(current.length != newArray.length){
