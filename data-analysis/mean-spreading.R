@@ -192,7 +192,7 @@ rank_mSpreadning <- function(data){
     if(tempLine$X2.5. > last_x2){
       cont <- cont + 1
       last_x2 <- tempLine$X97.5.
-    }
+    }w
     result_rank_apfd <- rbind(result_rank_apfd, data.frame(project=tempLine$project,
                                                            algorithm=tempLine$algorithm,
                                                            x1=tempLine$X2.5.,

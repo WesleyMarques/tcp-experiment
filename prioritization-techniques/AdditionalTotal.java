@@ -126,7 +126,7 @@ public class AdditionalTotal {
 
 			this.currentCovered = new char[columnNum]; // Initialized the global
 														// currentCovered.
-			this.methodComplexity = getCodeComplexity(columnNum);
+			this.methodComplexity = (columnNum);
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,40 +147,41 @@ public class AdditionalTotal {
 
 	public int[] getSelectedTestSequence(){
 		this.getCoverageMatrix(coverageFile);
-		int n = this.CoverageMatrix.length, m = this.CoverageMatrix[0].length; //m = numero de coverageType, n = numero de testes
-		this.initialize(n, m);
-		int k, sum, s;
-		for (int i = 0; i < n; i++) {
-			k = 0;
-			while(k < n && this.selected[k]){
-				k++;
+		int numTests = this.CoverageMatrix.length, 
+				numCoverageUnit = this.CoverageMatrix[0].length;
+		this.initialize(numTests, numCoverageUnit);
+		int currentTest, probSum, currentProb;
+		for (int currentTestIndex = 0; currentTestIndex < numTests; currentTestIndex++) {
+			currentTest = 0;
+			while(currentTest < numTests && this.selected[currentTest]){
+				currentTest++;
 			}
-			sum = 0;
-			for (int j = 0; j < m; j++) {
-				if(this.CoverageMatrix[k][j] == '1'){
-					sum += this.prob[j];
+			probSum = 0;
+			for (int currentCovIndex = 0; currentCovIndex < numCoverageUnit; currentCovIndex++) {
+				if(this.CoverageMatrix[currentTest][currentCovIndex] == '1'){
+					probSum += this.prob[currentCovIndex];
 				}
 			}
 
-			for (int l = k+1; l < n; l++) {
+			for (int l = currentTest+1; l < numTests; l++) {
 				if(!this.selected[l]){
-					s = 0;
-					for (int j = 0; j < m; j++) {
-						if(this.CoverageMatrix[l][j] == '1'){
-							s += this.prob[j];
+					currentProb = 0;
+					for (int currentCovIndex = 0; currentCovIndex < numCoverageUnit; currentCovIndex++) {
+						if(this.CoverageMatrix[l][currentCovIndex] == '1'){
+							currentProb += this.prob[currentCovIndex];
 						}
 					}
-					if(s > sum){
-						sum = s;
-						k = l;
+					if(s > probSum){
+						probSum = currentProb;
+						currentTest = l;
 					}
 				}
 			}
-			this.priority[i] = k;
-			this.selected[k] = true;
-			for (int j = 0; j < m; j++) {
-				if(this.CoverageMatrix[k][j] == '1'){
-					this.prob[j] *= (1-getProb(j));
+			this.priority[currentTestIndex] = currentTest;
+			this.selected[currentTest] = true;
+			for (int currentCovIndex = 0; currentCovIndex < numCoverageUnit; currentCovIndex++) {
+				if(this.CoverageMatrix[currentTest][currentCovIndex] == '1'){
+					this.prob[currentCovIndex] *= (1-getProb(currentCovIndex));
 				}
 			}
 		}
