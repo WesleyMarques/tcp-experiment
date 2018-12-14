@@ -126,7 +126,7 @@ public class AdditionalTotal {
 
 			this.currentCovered = new char[columnNum]; // Initialized the global
 														// currentCovered.
-			this.methodComplexity = (columnNum);
+			this.methodComplexity = getCodeComplexity(columnNum);
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,7 +147,7 @@ public class AdditionalTotal {
 
 	public int[] getSelectedTestSequence(){
 		this.getCoverageMatrix(coverageFile);
-		int numTests = this.CoverageMatrix.length, 
+		int numTests = this.CoverageMatrix.length,
 				numCoverageUnit = this.CoverageMatrix[0].length;
 		this.initialize(numTests, numCoverageUnit);
 		int currentTest, probSum, currentProb;
@@ -171,7 +171,7 @@ public class AdditionalTotal {
 							currentProb += this.prob[currentCovIndex];
 						}
 					}
-					if(s > probSum){
+					if(currentProb > probSum){
 						probSum = currentProb;
 						currentTest = l;
 					}

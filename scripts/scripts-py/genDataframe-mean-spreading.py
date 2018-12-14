@@ -21,6 +21,7 @@ mapAlgorithm = {
 "GreedyTotal": "Total",
 "GreedyAdditional": "Additional",
 "GreedyAdditionalNew": "AdditionalNew",
+"GreedyAdditionalSimilarity": "AdditionalSimilarity",
 "Genetic": "Search-Based",
 "AdditionalTotal":"AdditionalTotal"
 }
