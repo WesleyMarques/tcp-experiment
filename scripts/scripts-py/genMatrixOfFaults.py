@@ -16,9 +16,9 @@ def convertTime(value):
 
 PATH = os.getcwd()
 os.chdir(PATH)
-projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor", "jasmine-maven-plugin", "assertj-core"]
+projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor"]
 covLevel = ["statement", "method", "branch"]
-algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalNew", "AdditionalTotal"][2:]
+algorithms = ["ARTMaxMin", "Genetic", "GreedyAdditionalNew", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalSimilarity", "AdditionalTotal"][3:]
 projectName = projects[int(sys.argv[1])]
 covType = covLevel[int(sys.argv[2])]
 METRIC = sys.argv[3]
