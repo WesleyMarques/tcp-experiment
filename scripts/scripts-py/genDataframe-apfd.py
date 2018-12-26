@@ -21,6 +21,7 @@ mapAlgorithm = {
 "GreedyTotal": "Total",
 "GreedyAdditional": "Additional",
 "GreedyAdditionalNew": "AdditionalNew",
+"GreedyAdditionalSimilarity": "AdditionalSimilarity",
 "Genetic": "Search-Based",
 "AdditionalTotal":"AdditionalTotal"
 }
@@ -30,7 +31,7 @@ def getAlgorithmName(alg, covType):
 
 PATH = os.getcwd()
 os.chdir(PATH)
-projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"][:-1]
+projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"][:-3]
 covLevel = ["statement", "method", "branch"]
 
 resultFile = open("dataframe_apfd.data", "w")
@@ -45,7 +46,7 @@ for project in projects:
             for algorithm in jsonData:
                 for apfdValue in jsonData[algorithm]:
                     if getAlgorithmName(algorithm,covType) == "Search-Based-statement":
-                        print project+",v"+str(lenVersion-idx)+","+str(apfdValue)+","+covType+","+getAlgorithmName(algorithm,covType) 
+                        print project+",v"+str(lenVersion-idx)+","+str(apfdValue)+","+covType+","+getAlgorithmName(algorithm,covType)
                     result = project+",v"+str(lenVersion-idx)+","+str(apfdValue)+","+covType+","+getAlgorithmName(algorithm,covType)
                     resultFile.write(result+"\n")
 resultFile.close()
