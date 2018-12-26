@@ -23,7 +23,7 @@ PATH = os.getcwd()
 os.chdir(PATH)
 
 projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"]
-algorithms = [str(sys.argv[3])] if len(sys.argv) > 3 else ["GreedyTotal", "GreedyAdditional", "GreedyAdditionalSimilarity", "AdditionalTotal"]
+algorithms = [str(sys.argv[3])] if len(sys.argv) > 3 else ["GreedyTotal", "GreedyAdditional", "ARTMaxMin", "Genetic"]
 covLevel = ["statement", "method", "branch"]
 
 project = projects[int(sys.argv[1])]
