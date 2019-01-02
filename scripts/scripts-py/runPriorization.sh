@@ -10,7 +10,7 @@ mv ./prioritization-techniques/*.class ./
 
 for (( i = 0; i < 8; i++ )); do
   for (( j = 0; j < 3; j++ )); do
-    python ./scripts/scripts-py/run-priorization.py $i $j
+    python ./scripts/scripts-py/run-priorization.py $i $j &
   done
 done
 
