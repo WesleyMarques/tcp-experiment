@@ -18,7 +18,7 @@ PATH = os.getcwd()
 os.chdir(PATH)
 projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor"]
 covLevel = ["statement", "method", "branch"]
-algorithms = ["ARTMaxMin", "Genetic", "GreedyAdditionalNew", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalSimilarity", "AdditionalTotal"][3:]
+algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalSimilarity", "AdditionalTotal", "GreedyAdditionalNew"][:4]
 projectName = projects[int(sys.argv[1])]
 covType = covLevel[int(sys.argv[2])]
 METRIC = sys.argv[3]
