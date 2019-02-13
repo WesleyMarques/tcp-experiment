@@ -2,3 +2,4 @@
 .Rhistory
 .RData
 .Ruserdata
+./data/**/coverage/**/*_output
