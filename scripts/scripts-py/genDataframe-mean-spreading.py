@@ -31,7 +31,7 @@ def getAlgorithmName(alg, covType):
 
 PATH = os.getcwd()
 os.chdir(PATH)
-projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"][:-3]
+projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"]
 covLevel = ["statement", "method", "branch"]
 
 resultFile = open("dataframe_mean_spreading.data", "w")

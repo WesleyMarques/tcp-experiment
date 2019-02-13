@@ -16,9 +16,9 @@ library(cluster)
 library(ggdendro)
 require(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
 require(PMCMR)
-# algorithm_list <- c("ART-statement","ART-branch","ART-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","Search-Based-statement","Search-Based-method","Search-Based-branch","AdditionalSimilarity-statement","AdditionalSimilarity-method","AdditionalSimilarity-branch")
-algorithm_list <- c("AdditionalTotal-statement","AdditionalTotal-branch","AdditionalTotal-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","AdditionalSimilarity-statement","AdditionalSimilarity-method","AdditionalSimilarity-branch")
+
 colorder <- c( "blue", "green", "orange", "red", "brown")
+algorithm_list <- c("Search-Based-statement","Search-Based-branch","Search-Based-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","ART-statement","ART-method","ART-branch")
 
 data_apfd <- read_csv("data/dataframe_apfd.data")
 data_apfd$algorithm = factor(data_apfd$algorithm, levels=algorithm_list)
@@ -62,12 +62,14 @@ data_apfd %>%
 
 #Teste de normalidade
 pearson.test(data_apfd$apfd, adjust = F)
-qqnorm(data_apfd$apfd)
+qqnorm(data_apfd$apfd, main="QQPlot of APFD distribution", 
+       ylab="APFD Sample Quantiles")
 
 #Teste de similaridade de distribuição com Kruskal-Wallis para ca projeto
 for(proj in unique(data_apfd$project)){
   dataTestApfd <- data_apfd %>%
-    filter(project==proj) %>%
+    # filter(project==proj) %>%
+    mutate(algorithm = str_replace_all(algorithm, "[-]", "_")) %>%
     mutate(algorithm = factor(algorithm, levels=unique(algorithm)))
   kruskal.test(apfd ~ algorithm, data=dataTestApfd)
   PT = dunnTest(apfd ~ algorithm, data=dataTestApfd, method = "bh", two.sided = F)
@@ -199,7 +201,7 @@ rank <- function(data){
 
 for(proj in unique(data_apfd$project)){
   projectOrdered <- result_apfd %>%
-    filter(project == proj) %>% 
+    filter(project == proj) %>%
     arrange(desc(X97.5.))
   print("==============================================")
   print(paste("===============", proj, "=============="))
