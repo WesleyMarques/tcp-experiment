@@ -1,0 +1,13 @@
+!SESSION 2019-02-16 16:56:53.538 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.jee.product -keyring /Users/wesley/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -data /Users/wesley/Documents/workspaceMastering/tcp-experiment -product org.eclipse.epp.package.jee.product -keyring /Users/wesley/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2019-02-16 16:57:02.008
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2019-02-16 17:03:00.482
+!MESSAGE No repository found at jar:file:/Users/wesley/Downloads/eclemma-3.0.1.zip!/.
