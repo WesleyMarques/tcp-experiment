@@ -203,13 +203,12 @@ public class GreedyAdditionalSimilarity {
 					testsSimilar2move.add(i);
 				}
 			}
-			
 			if(testsSimilar2move.size() > 0){
 				orderByCoverage(testsSimilar2move, unitsCoveredByTest);
 				double numberOfTests2Move = Math.ceil(testsSimilar2move.size()*this.testSimilar2Move/1);
 				for (int i = 0; i < testsSimilar2move.size() && i < numberOfTests2Move; i++) {
 					originalUnitsCoveredByTest[i] = 0;
-					testsSelected.add(i);
+					testsSelected.add(testsSimilar2move.get(i));
 				}
 			}
 			

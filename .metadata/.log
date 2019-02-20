@@ -11,3 +11,9 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2019-02-16 17:03:00.482
 !MESSAGE No repository found at jar:file:/Users/wesley/Downloads/eclemma-3.0.1.zip!/.
+
+!ENTRY org.eclipse.jface.text 2 0 2019-02-16 18:09:57.751
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2019-02-16 18:09:57.754
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'

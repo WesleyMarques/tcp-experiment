@@ -78,6 +78,7 @@ for version in versions:
         for test in tests2Mut:
             for mutante in tests2Mut[test]:
                 if mutante in groupTime:
+
                     flag = True
                     testIdx = testMat.index(test)
                     tempArr[testIdx][groupTime.index(mutante)] = 1
