@@ -102,3 +102,15 @@ def genTimeByGroupOfFaults(mutsTranspose, testsPrio, project, version, testTime)
     for timeIdx in testsPrio[:idx+1]:
         amount += testTime[timeIdx]
     return amount
+
+def chooseMetric(metric, mutsTranspose, TESTES_PRIOR, projectName, version):
+    if metric == "apfd":
+        return genAPFDValue(mutsTranspose, TESTES_PRIOR, projectName, version)
+    elif metric == "spreading":
+        return genSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)
+    elif metric == "mean-spreading":
+        return genMeanSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)
+    # elif metric == "exec-time":
+    #     return calc_metrics.genTimeByGroupOfFaults(mutsTranspose, TESTES_PRIOR, projectName, version, testMatTime)
+    elif metric == "group-spreading":
+        return genGroupSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)

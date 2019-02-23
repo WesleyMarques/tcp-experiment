@@ -16,6 +16,7 @@ def convertTime(value):
 
 PATH = os.getcwd()
 os.chdir(PATH)
+
 projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor", "jasmine-maven-plugin", "assertj-core"]
 covLevel = ["statement", "method", "branch"]
 algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalSimilarity", "AdditionalTotal", "GreedyAdditionalNew"][:4]
@@ -47,7 +48,7 @@ for version in versions:
         testMatTime.append(median(testTimes))
     #end
 
-    fullMat = [[0 for x in range(faultGroupsLen)] for y in range(testLen)]
+    fullMat = [[0]*faultGroupsLen]*testLen
 
     #Get all groups of Faults
     faultGroups = open(PATH+"/data/"+projectName+"/faults-groups/"+version+"/faults-groups.data", "r")
@@ -73,12 +74,11 @@ for version in versions:
     gSize = len(fGroups[0])
     metricResult = {}
     for groupTime in fGroups:
-        tempArr = [[0 for x in range(gSize)] for y in range(testLen)]
+        tempArr = [[0] * gSize] * testLen
         flag = False
         for test in tests2Mut:
             for mutante in tests2Mut[test]:
                 if mutante in groupTime:
-
                     flag = True
                     testIdx = testMat.index(test)
                     tempArr[testIdx][groupTime.index(mutante)] = 1
@@ -90,17 +90,8 @@ for version in versions:
                     metricResult[alg] = []
             additional = priorizationTests[alg]
             TESTES_PRIOR = list(map(int, additional.split(",")))
-            if METRIC == "apfd":
-                metricResult[alg].append((calc_metrics.genAPFDValue(mutsTranspose, TESTES_PRIOR, projectName, version)))
-            elif METRIC == "spreading":
-                metricResult[alg].append((calc_metrics.genSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)))
-            elif METRIC == "mean-spreading":
-                metricResult[alg].append((calc_metrics.genMeanSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)))
-            elif METRIC == "exec-time":
-                time = calc_metrics.genTimeByGroupOfFaults(mutsTranspose, TESTES_PRIOR, projectName, version, testMatTime)
-                metricResult[alg].append(time)
-            elif METRIC == "group-spreading":
-                metricResult[alg].append((calc_metrics.genGroupSpreading(mutsTranspose, TESTES_PRIOR, projectName, version)))
+            metricResult = calc_metrics.chooseMetric(METRIC, mutsTranspose, TESTES_PRIOR, projectName, version)
+            metricResult[alg].append(metricResult)
     with open(PATH+"/data/"+projectName+"/faults-groups/"+version+"/"+METRIC+"_"+covType+".json", 'w') as outfile:
         str_ = json.dumps(metricResult,indent=4,sort_keys=True,separators=(',',':'), ensure_ascii=False)
         outfile.write(to_unicode(str_))
