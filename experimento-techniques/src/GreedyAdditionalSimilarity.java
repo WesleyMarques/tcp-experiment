@@ -41,7 +41,7 @@ public class GreedyAdditionalSimilarity {
 	}
 
 	/**
-	 * Method to find indexes of unit code from test classes. 
+	 * Method to find indexes of unit code from test classes.
 	 */
 	private ArrayList<Integer> findTestsCodeIndexes() throws NumberFormatException, IOException {
 		String line;
@@ -61,10 +61,10 @@ public class GreedyAdditionalSimilarity {
 		br_index.close();
 		return result;
 	}
-	
+
 	/**
 	 * Remove columns that are in the list of testeIndexes
-	 * 
+	 *
 	 * @return new line without unit code from testsIndexes
 	 */
 	private String removeColumns(String line, List<Integer> indexTest) {
@@ -78,7 +78,7 @@ public class GreedyAdditionalSimilarity {
 
 	/**
 	 * Read the Coverage File and Store the value to the APBC, APDC or APSC matrix
-	 * 
+	 *
 	 * @param coverageFile
 	 */
 	public void getCoverageMatrix(String coverageFile) {
@@ -88,7 +88,7 @@ public class GreedyAdditionalSimilarity {
 //			ArrayList<Integer> indexTestCode = findTestsCodeIndexes();
 			int codeUnitCoveredLength = 0;
 			String unitsCoveragedByTest = null;
-			
+
 			// Read all the rows from the Coverage Matrix and store then in an
 			// ArrayList for further process.
 			while ((unitsCoveragedByTest = br.readLine()) != null) {
@@ -159,7 +159,7 @@ public class GreedyAdditionalSimilarity {
 		this.getCoverageMatrix(this.coverageFile);
 		this.getSimilarTests();
 
-		int lenTests = this.coverageMatrix.length, 
+		int lenTests = this.coverageMatrix.length,
 			lenUnits = this.coverageMatrix[0].length;
 		int[] selectedTestSequence = new int[lenTests];
 		int[] unitsCoveredByTest = new int[lenTests];
@@ -168,12 +168,12 @@ public class GreedyAdditionalSimilarity {
 		boolean containAllZeroRow = false;
 
 		getCoverageByTest(lenTests, unitsCoveredByTest, unitsNotCovered);
-		
-		int[] originalUnitsCoveredByTest = Arrays.copyOf(unitsCoveredByTest, lenTests); 
-		
+
+		int[] originalUnitsCoveredByTest = Arrays.copyOf(unitsCoveredByTest, lenTests);
+
 		this.currentUnitsCovered = new char[lenUnits];
 		this.clearArrayWithZeros(this.currentUnitsCovered);
-		
+
 		while (testsSelected.size() < lenTests) {
 			System.out.println("teste");
 			int maxTestCoveringIndex = this.selectMaxNonCovered(unitsCoveredByTest);
@@ -211,7 +211,7 @@ public class GreedyAdditionalSimilarity {
 					testsSelected.add(i);
 				}
 			}
-			
+
 			this.mergeIntoCurrentArray(this.currentUnitsCovered, this.coverageMatrix[maxTestCoveringIndex]);
 
 			for (int j = 0; j < lenTests; j++) {
@@ -234,7 +234,7 @@ public class GreedyAdditionalSimilarity {
 		}
 		return selectedTestSequence;
 	}
-	
+
 	private void orderByCoverage(List<Integer> testsSimilar2move, int[] unitsCoveredByTest){
 		Integer[] newArray = new Integer[unitsCoveredByTest.length];
 		int i = 0;
