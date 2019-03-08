@@ -3,20 +3,18 @@ import os,sys
 import utils
 import time
 import threading
+import datetime
 
 
 from MyThread import myThread
 import ssh_client
 
-projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor","assertj-core"]
+projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "metrics-core", "vraptor", "la4j", "assertj-core"]
 covLevel = ["statement", "method", "branch"]
 
 PATH = os.getcwd()
 os.chdir(PATH)
 
-hostConfig = {
-    "name": "monogatari"
-}
 
 javaFile = PATH+"/scripts/cluster/GreedyAdditionalSimilarity.class"
 
@@ -25,6 +23,8 @@ queuePackages = []
 slavesAlive = []
 slavesFree = []
 SUCCESS = "success"
+
+base_path = "/tmp/similatiryExperiment/"
 
 def buildPackageName(project, coverage, version):
     return project+"_"+coverage+"_"+version
@@ -37,49 +37,51 @@ def resetExperimentData():
 
 def createPackages():
     resetExperimentData()
-    for project in projects:
+    for project in projects[-2:]:
         for coverageLevel in covLevel:
             versions = open(PATH+"/data/"+project+"/coverage/sorted_version.txt")
             for version in versions:
+                if coverageLevel not in ["method", "statement"] and version not in ["dd048158fccbc46e7aab9f8d22b582d92bcb8f78", "be9f966c60b06c4b949336b34cb8c95e041f3205"]:
+                    continue
+                hostConfig = {
+                    "name": "monogatari"
+                }
                 version = version.replace("\n", "")
-                currentPackagePath = "/tmp/similatiryExperiment/"+buildPackageName(project, coverageLevel, version)
-                utils.run_bash("mkdir", [currentPackagePath])
-                utils.run_bash("cp", [PATH+"/data/"+project+"/coverage/"+version+"/"+coverageLevel+"_matrix.txt", currentPackagePath])
-                utils.run_bash("cp", [PATH+"/data/"+project+"/coverage/"+version+"/"+coverageLevel+"_index.txt", currentPackagePath])
-                utils.run_bash("cp", [javaFile, currentPackagePath])
-                utils.run_bash("cp", [PATH+"/scripts/cluster/run-priorization.py", currentPackagePath])
-                tempFile = open(currentPackagePath+"/input.txt", "w")
-                tempFile.write(project+","+coverageLevel+","+version)
-                tempFile.close()
+                currentPackagePath = buildPackageName(project, coverageLevel, version)
+                utils.run_bash("mkdir", [base_path+currentPackagePath])
+                utils.run_bash("cp", [PATH+"/data/"+project+"/coverage/"+version+"/"+coverageLevel+"_matrix.txt", base_path+currentPackagePath])
+                utils.run_bash("cp", [PATH+"/data/"+project+"/coverage/"+version+"/"+coverageLevel+"_index.txt", base_path+currentPackagePath])
+                utils.run_bash("cp", [javaFile, base_path+currentPackagePath])
+                utils.run_bash("cp", [PATH+"/scripts/cluster/run-priorization.py", base_path+currentPackagePath])
                 hostConfig["unit"] = currentPackagePath
+                hostConfig["input"] = project+","+coverageLevel+","+version
                 queuePackages.append(hostConfig)
 
 def getSlavesAlive():
-    result = []
+    slaves = []
     with open(PATH+"/scripts/cluster/slaves.txt", 'r') as outfile:
         for slave in outfile:
             slaveHost = slave.split(',')
             result = utils.run_bash("bash", [PATH+"/scripts/cluster/pingTest.sh", slaveHost[0]])
             if result.strip() == SUCCESS:
-                result.append(slaveHost[0])
-    return result
+                slaves.append(slaveHost[0])
+    return slaves
 
-
-# slavesAlive = getSlavesAlive()
+currentDT = datetime.datetime.now()
+slavesAlive = getSlavesAlive()
 slavesFree = [True] * len(slavesAlive)
-# createPackages()
-
+createPackages()
 queueLock = threading.Lock()
+packAmount = len(queuePackages)
 workQueue = Queue.Queue(len(queuePackages))
 slavesRunning = []
 threadID = 1
 exitFlag = [False]
 # Create new threads
-for tName in slavesFree:
-   thread = myThread(tName, workQueue, queueLock, exitFlag, slavesAlive, slavesFree)
+for tName in range(len(slavesFree)):
+   thread = myThread(slavesAlive[tName], workQueue, queueLock, exitFlag, slavesAlive, slavesFree)
    thread.start()
    slavesRunning.append(thread)
-
 # Fill the queue
 queueLock.acquire()
 for package in queuePackages:
@@ -91,10 +93,15 @@ for package in queuePackages:
         queueLock.acquire()
 queueLock.release()
 
+currTime = 0 
 while not workQueue.empty():
-   pass
+    newCurrTime = (packAmount-workQueue.qsize())/(packAmount*1.0)
+    if newCurrTime != currTime:
+        print "========> Finished %s of %s - %s" % (str(packAmount-workQueue.qsize()), str(packAmount), (newCurrTIme))
+    pass
 
 exitFlag[0] = True
 
 for t in slavesRunning:
    t.join()
+print str(currentDT),str(datetime.datetime.now())
