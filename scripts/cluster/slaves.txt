@@ -1,6 +1,5 @@
 daredevil,150.156.98.47
 merlin,150.156.98.37
-monogatari,150.156.98.16
 continuum,150.156.98.25
 fringe,150.156.98.77
 dexter,150.156.98.17
