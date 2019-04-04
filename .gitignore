@@ -4,3 +4,7 @@
 .Ruserdata
 ./data/**/coverage/**/*_output
 .metadata/
+./**/**/**/*.pyc
+.recommenders
+.metadata
+.metadata/

@@ -29,6 +29,36 @@ data_apfd %>%
   summarise(max = max(count), min = min(count)) %>%
   View()
 
+data_apfd_assert <- data_apfd %>%
+  mutate(metricName = "apfd") %>%
+  filter(covLevel == "statement") %>%
+  filter(project == "java-apns")
+
+data_apfd_assert_method <- data_apfd %>%
+  filter(covLevel == "method") %>%
+  filter(project == "scribe-java")
+
+data_apfd_assert %>%
+  mutate(algorithm = str_replace_all(algorithm, "GreedyAdditionalSimilarity", "GAS")) %>%
+  mutate(algorithm = str_replace_all(algorithm, "statement", "stmt")) %>%
+  ggplot(aes(y=metric)) +
+  geom_boxplot(aes(x = algorithm),outlier.colour="red")+
+  ylab("APFD")+
+  xlab("Versions")+
+  theme(axis.text.x = element_blank())+
+  facet_wrap(~limiar, scales = "free")
+
+data_apfd_assert_method %>%
+  mutate(algorithm = str_replace_all(algorithm, "GreedyAdditionalSimilarity", "GAS")) %>%
+  mutate(algorithm = str_replace_all(algorithm, "method", "met")) %>%
+  ggplot(aes(y=metric)) +
+  geom_boxplot(aes(x = algorithm),outlier.colour="red")+
+  ylab("APFD")+
+  xlab("Versions")+
+  theme(axis.text.x = element_blank())+
+  facet_wrap(~limiar, scales = "free")
+
+
 #Distribuição dos grupos de faltas para cada tipo de cobertura
 data_apfd %>%
   filter(covLevel == "statement") %>%

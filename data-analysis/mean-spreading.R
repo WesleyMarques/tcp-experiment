@@ -20,13 +20,49 @@ require(PMCMR)
 
 colorder <- c( "blue", "green", "orange", "red", "brown")
 algorithm_list <- c("Search-Based-statement","Search-Based-branch","Search-Based-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","ART-statement","ART-method","ART-branch")
-data_mSpreading <- read_csv("data/dataframe_mean_spreading.data")
+
+data_mSpreading <- read_csv("data/dataframe_mean-spreading.data")
 data_mSpreading$algorithm = factor(data_mSpreading$algorithm, levels=algorithm_list)
 
 data_mSpreading %>%
   group_by(project, version, algorithm, covLevel) %>%
   summarise(count = n()) %>%
   View()
+
+
+data_mSpreading_assert <- data_mSpreading %>%
+  mutate(metricName = "meanSpreading") %>%
+  mutate(metric = 1-metric) %>%
+  filter(covLevel == "statement") %>%
+  filter(project == "java-apns")
+
+data_mSpreading_assert %>%
+  sample_n(100) %>% 
+  ggplot(aes(x = algorithm,y = metric, group=1)) +
+  stat_summary(fun.y = median, geom="line", fill=metricName)+
+  theme(axis.text.x = element_blank())+
+  facet_wrap(~limiar, scales = "free")
+
+data_mSpreading_assert %>%
+  mutate(algorithm = str_replace_all(algorithm, "GreedyAdditionalSimilarity", "GAS")) %>%
+  mutate(algorithm = str_replace_all(algorithm, "statement", "stmt")) %>%
+  ggplot(aes(y=metric)) +
+  geom_boxplot(aes(x = algorithm),outlier.colour="red")+
+  ylab("Mean-Spreading")+
+  xlab("Versions")+
+  theme(axis.text.x = element_blank())+
+  facet_wrap(~limiar, scales = "free")
+
+data_mSpreading_assert_method %>%
+  mutate(algorithm = str_replace_all(algorithm, "GreedyAdditionalSimilarity", "GAS")) %>%
+  mutate(algorithm = str_replace_all(algorithm, "method", "met")) %>%
+  ggplot(aes(y=metric)) +
+  geom_boxplot(aes(x = algorithm),outlier.colour="red")+
+  ylab("Mean-Spreading")+
+  xlab("Versions")+
+  theme(axis.text.x = element_blank())+
+  facet_wrap(~limiar, scales = "free")
+
 
 data_mSpreading <- data_mSpreading %>%
   filter(meanSpreading > 0)
