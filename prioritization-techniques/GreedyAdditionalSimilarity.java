@@ -197,7 +197,7 @@ public class GreedyAdditionalSimilarity {
 			for (int i = 0; i < this.testSimilarity[maxTestCoveringIndex].length; i++) {
 				if (i == maxTestCoveringIndex || testsSelected.contains(i))
 					continue;
-				if (this.testSimilarity[maxTestCoveringIndex][i] >= similarityFactor) {
+				if (this.testSimilarity[maxTestCoveringIndex][i] >= similarityFactor) {//mais semelhantes
 					testsSimilar2move.add(i);
 				}
 			}

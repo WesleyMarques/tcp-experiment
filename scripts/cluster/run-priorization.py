@@ -19,7 +19,7 @@ except NameError:
 
 project,coverage,version = sys.argv[1].split(",")
 
-limiares = range(0,101,5)
+limiares = range(0,1,5)
 maxTests = range(0,101,5)
 values = {}
 status = 0

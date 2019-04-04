@@ -1,2 +1,2 @@
-$PWD/scripts/scripts-py/run-metric.sh apfd &
-$PWD/scripts/scripts-py/run-metric.sh mean-spreading &
+$PWD/scripts/bash-files/runMetric.sh apfd &
+$PWD/scripts/bash-files/runMetric.sh mean-spreading &
