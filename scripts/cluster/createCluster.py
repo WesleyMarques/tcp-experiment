@@ -16,7 +16,8 @@ PATH = os.getcwd()
 os.chdir(PATH)
 
 
-javaFile = PATH+"/scripts/cluster/GreedyAdditionalSimilarity.class"
+# javaFile = PATH+"/scripts/cluster/GreedyAdditionalSimilarity.class"
+javaFile = PATH+"/scripts/cluster/GreedyAdditionalSelection.class"
 
 queueSlaves = []
 queuePackages = []
@@ -37,12 +38,10 @@ def resetExperimentData():
 
 def createPackages():
     resetExperimentData()
-    for project in projects[-2:]:
+    for project in projects:
         for coverageLevel in covLevel:
             versions = open(PATH+"/data/"+project+"/coverage/sorted_version.txt")
             for version in versions:
-                if coverageLevel not in ["method", "statement"] and version not in ["dd048158fccbc46e7aab9f8d22b582d92bcb8f78", "be9f966c60b06c4b949336b34cb8c95e041f3205"]:
-                    continue
                 hostConfig = {
                     "name": "monogatari"
                 }
@@ -93,11 +92,12 @@ for package in queuePackages:
         queueLock.acquire()
 queueLock.release()
 
-currTime = 0 
+currTime = packAmount-workQueue.qsize()
 while not workQueue.empty():
     newCurrTime = (packAmount-workQueue.qsize())/(packAmount*1.0)
     if newCurrTime != currTime:
-        print "========> Finished %s of %s - %s" % (str(packAmount-workQueue.qsize()), str(packAmount), (newCurrTIme))
+        currTime = newCurrTime
+        print "========> Finished %s of %s - %s" % (str(packAmount-workQueue.qsize()), str(packAmount), (newCurrTime))
     pass
 
 exitFlag[0] = True
