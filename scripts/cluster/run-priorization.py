@@ -23,7 +23,7 @@ limiares = range(0,1,5)
 maxTests = range(0,101,5)
 values = {}
 status = 0
-algorithm = "GreedyAdditionalSimilarity"
+algorithm = "GreedyAdditionalSelection"
 
 for limiar in limiares:
     for maxTest in maxTests:
