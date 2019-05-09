@@ -1,3 +1,4 @@
+#2019-04-23 10:14:04.132402 2019-04-24 00:40:49.209549
 import json
 import io
 import sys, os
@@ -19,11 +20,12 @@ except NameError:
 
 project,coverage,version = sys.argv[1].split(",")
 
-limiares = range(0,1,5)
+limiares = range(0,101,5)
 maxTests = range(0,101,5)
 values = {}
 status = 0
-algorithm = "GreedyAdditionalSelection"
+# algorithm = "GreedyAdditionalSelection"
+algorithm = "GreedyAdditionalSimilarity"
 
 for limiar in limiares:
     for maxTest in maxTests:
