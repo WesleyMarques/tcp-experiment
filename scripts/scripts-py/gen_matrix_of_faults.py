@@ -73,10 +73,10 @@ def tests_mutants_transpose(tests2Mut, currentGroup, testMat, resultMatrix):
 PATH = os.getcwd()
 os.chdir(PATH)
 
-projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor", "jasmine-maven-plugin", "assertj-core"][6:]
+projects = [ "scribe-java", "java-apns", "jopt-simple", "la4j", "metrics-core", "vraptor", "jasmine-maven-plugin", "assertj-core"][7:]
 covLevel = ["statement", "method", "branch"]
 # algorithms = ["ARTMaxMin", "Genetic", "GreedyTotal", "GreedyAdditional", "GreedyAdditionalSimilarity", "AdditionalTotal", "GreedyAdditionalNew"][:4]
-algorithms = ["GreedyAdditionalSelection"]
+algorithms = ["GreedyAdditionalSimilarity"]
 projectName = projects[int(sys.argv[1])]
 covType = covLevel[int(sys.argv[2])]
 METRIC = sys.argv[3]
@@ -118,7 +118,7 @@ for version in versions:
         if not mutsTranspose:
             continue
         # here I need to create all possibility GreedyAdditionalSimilarity_[0-1]_[0-1]
-        limiares = range(0,1,5)
+        limiares = range(0,101,5)
         maxTests = range(0,101,5)
         for alg in algorithms:
             for limiar in limiares:

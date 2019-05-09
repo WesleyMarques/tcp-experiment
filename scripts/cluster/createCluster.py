@@ -16,8 +16,8 @@ PATH = os.getcwd()
 os.chdir(PATH)
 
 
-# javaFile = PATH+"/scripts/cluster/GreedyAdditionalSimilarity.class"
-javaFile = PATH+"/scripts/cluster/GreedyAdditionalSelection.class"
+javaFile = PATH+"/scripts/cluster/GreedyAdditionalSimilarity.class"
+# javaFile = PATH+"/scripts/cluster/GreedyAdditionalSelection.class"
 
 queueSlaves = []
 queuePackages = []
