@@ -14,6 +14,7 @@ except NameError:
 
 def get_tests_by_mutants(testsFile):
     tests2Mut = {}
+    mutantsSet = {}
     for testMut in testsFile:
         testMut = testMut.replace("\n", "")
         splitLine = testMut.split(" ")
@@ -22,7 +23,9 @@ def get_tests_by_mutants(testsFile):
         if testName not in testsName:
             continue
         tests2Mut[testName] = mutants  # testName identify mutants
-    return tests2Mut
+        for mutant in mutants:
+            mutantsSet[mutant] = 1
+    return tests2Mut,len(mutantsSet)
 
 
 def get_info_test_execution(testsFile):
@@ -43,7 +46,7 @@ def get_coverage_matrix(coverageFile):
     coverageMatrix = [];
     for line in coverageFile:
         coverageMatrix.append(list(line))
-    return coverageMatrix
+    return coverageMatrix, len(coverageMatrix[0])
 
 def covered_number(coverageTest):
     return coverageTest.count("1");
@@ -56,6 +59,7 @@ projects = ["scribe-java", "jasmine-maven-plugin", "java-apns",
 covLevels = ["statement", "method", "branch"]
 
 with open(PATH+"/result.data", 'w+') as outfile:
+    outfile.write("project, version, coverage, test, faults, faultsTax, covered, coveredTax\n")
     for project in projects:
         with open(PATH + "/data/" + project + "/coverage/sorted_version.txt") as versionFile:
             versions = [line.rstrip('\n') for line in versionFile]
@@ -64,13 +68,15 @@ with open(PATH+"/result.data", 'w+') as outfile:
                 with open(PATH + "/data/" + project + "/coverage/" + version + "/running_time.txt", "r") as testsFile:
                     testsName, testsTime, testLen = get_info_test_execution(testsFile)
                 with open(PATH + "/data/" + project + "/faults-groups/" + version + "/test-mut.data", "r") as testsFile:
-                    tests2Mut = get_tests_by_mutants(testsFile)
+                    tests2Mut, mutantsTotal = get_tests_by_mutants(testsFile)
                 with open(PATH + "/data/" + project + "/coverage/" + version + "/"+ coverage +"_matrix.txt", "r") as coverageFile:
-                    coverageMatrix = get_coverage_matrix(coverageFile)
+                    coverageMatrix, coverageTotal = get_coverage_matrix(coverageFile)
                 cont = 0
                 amount = []
                 for test in tests2Mut:
-                    lineToWrite = "%s,%s,%s,%s,%s,%s\n" % (project, version, coverage, test, str(len(tests2Mut[test])), str(covered_number(coverageMatrix[cont])))
+                    faults = len(tests2Mut[test])
+                    covered = covered_number(coverageMatrix[cont])
+                    lineToWrite = "%s,%s,%s,%s,%s,%s,%s,%s\n" % (project, version, coverage, test, str(faults), str(1.0*faults/mutantsTotal), str(covered), str(1.0*covered/coverageTotal))
                     amount.append(len(tests2Mut[test]))
                     cont += 1
                     outfile.write(lineToWrite)
