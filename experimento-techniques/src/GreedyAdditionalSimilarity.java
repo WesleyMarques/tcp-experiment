@@ -1,7 +1,3 @@
-/*
- * Use Greedy Additional Algorithm for Test Case Prioritization.
- * Yafeng.Lu@cs.utdallas.edu
- */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -175,7 +171,6 @@ public class GreedyAdditionalSimilarity {
 		this.clearArrayWithZeros(this.currentUnitsCovered);
 
 		while (testsSelected.size() < lenTests) {
-			System.out.println("teste");
 			int maxTestCoveringIndex = this.selectMaxNonCovered(unitsCoveredByTest);
 			if (maxTestCoveringIndex == -1) {
 				// All the Units are covered, then use the same algorithm for
@@ -193,8 +188,8 @@ public class GreedyAdditionalSimilarity {
 			}
 			originalUnitsCoveredByTest[maxTestCoveringIndex] = 0;
 			testsSelected.add(maxTestCoveringIndex);
+			this.mergeIntoCurrentArray(this.currentUnitsCovered, this.coverageMatrix[maxTestCoveringIndex]);
 			List<Integer> testsSimilar2move = new ArrayList<Integer>();
-			int testsMoved = 0;
 			for (int i = 0; i < this.testSimilarity[maxTestCoveringIndex].length; i++) {
 				if (i == maxTestCoveringIndex || testsSelected.contains(i))
 					continue;
@@ -202,17 +197,17 @@ public class GreedyAdditionalSimilarity {
 					testsSimilar2move.add(i);
 				}
 			}
-			System.out.println(Arrays.toString(testsSimilar2move.toArray()));
 			if(testsSimilar2move.size() > 0){
 				orderByCoverage(testsSimilar2move, unitsCoveredByTest);
 				double numberOfTests2Move = Math.ceil(testsSimilar2move.size()*this.testSimilar2Move/1);
 				for (int i = 0; i < testsSimilar2move.size() && i < numberOfTests2Move; i++) {
 					originalUnitsCoveredByTest[i] = 0;
-					testsSelected.add(i);
+					testsSelected.add(testsSimilar2move.get(i));
+					this.mergeIntoCurrentArray(this.currentUnitsCovered, this.coverageMatrix[testsSimilar2move.get(i)]);
 				}
 			}
 
-			this.mergeIntoCurrentArray(this.currentUnitsCovered, this.coverageMatrix[maxTestCoveringIndex]);
+
 
 			for (int j = 0; j < lenTests; j++) {
 				if (testsSelected.contains(j)) {

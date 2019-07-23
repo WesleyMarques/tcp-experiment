@@ -32,7 +32,7 @@ public class GreedyAdditionalSelection {
 
 	/**
 	 * Read the Coverage File and Store the value to the APBC, APDC or APSC matrix
-	 * 
+	 *
 	 * @param coverageFile
 	 */
 	public void getCoverageMatrix(String coverageFile) {
@@ -41,7 +41,7 @@ public class GreedyAdditionalSelection {
 			ArrayList<String> testsLines = new ArrayList<String>();
 			int codeUnitCoveredLength = 0;
 			String unitsCoveragedByTest = null;
-			
+
 			// Read all the rows from the Coverage Matrix and store then in an
 			// ArrayList for further process.
 			while ((unitsCoveragedByTest = br.readLine()) != null) {
@@ -111,7 +111,7 @@ public class GreedyAdditionalSelection {
 
 		this.getCoverageMatrix(this.coverageFile);
 
-		int lenTests = this.coverageMatrix.length, 
+		int lenTests = this.coverageMatrix.length,
 			lenUnits = this.coverageMatrix[0].length;
 		int[] selectedTestSequence = new int[lenTests];
 		int[] unitsCoveredByTest = new int[lenTests];
@@ -120,12 +120,12 @@ public class GreedyAdditionalSelection {
 		boolean containAllZeroRow = false;
 
 		getCoverageByTest(lenTests, unitsCoveredByTest, unitsNotCovered);
-		
-		int[] originalUnitsCoveredByTest = Arrays.copyOf(unitsCoveredByTest, lenTests); 
-		
+
+		int[] originalUnitsCoveredByTest = Arrays.copyOf(unitsCoveredByTest, lenTests);
+
 		this.currentUnitsCovered = new char[lenUnits];
 		this.clearArrayWithZeros(this.currentUnitsCovered);
-		
+
 		while (testsSelected.size() < lenTests) {
 			int maxTestCoveringIndex = this.selectMaxNonCovered(unitsCoveredByTest);
 			if (maxTestCoveringIndex == -1) {
@@ -156,7 +156,7 @@ public class GreedyAdditionalSelection {
 			for (int i = 0; i < testsSimilar2move.size() && i < numberOfTests2Move; i++) {
 				originalUnitsCoveredByTest[testsSimilar2move.get(i)] = 0;
 				testsSelected.add(testsSimilar2move.get(i));
-				this.mergeIntoCurrentArray(this.currentUnitsCovered, this.coverageMatrix[i]);
+				this.mergeIntoCurrentArray(this.currentUnitsCovered, this.coverageMatrix[testsSimilar2move.get(i)]);
 			}
 
 			for (int j = 0; j < lenTests; j++) {
@@ -179,7 +179,7 @@ public class GreedyAdditionalSelection {
 		}
 		return selectedTestSequence;
 	}
-	
+
 	private void orderByCoverage(List<Integer> testsSimilar2move, int[] unitsCoveredByTest){
 		Integer[] newArray = new Integer[unitsCoveredByTest.length];
 		int i = 0;

@@ -17,10 +17,12 @@ for(projectOne in projects){
       filter(coverage == covOne, project == projectOne) %>%
       mutate(metric = (covered - faults)) %>%
       # filter(metric <= 0 ) %>%
-      ggplot(aes(y = metric, x = testName)) +
+      ggplot(aes(y = faults, x = testName)) +
       geom_line(group=1)+
-      ylab("covered - faults")+
+      ylab("covered")+
       xlab("test name")+
       facet_wrap(~version, scales = "free")
+    graphName <- paste(c("graphics/apfd_mspreading_covered_vs_faults/", projectOne, "_", covOne, "_faults.pdf"), sep="", collapse = "")
+    ggsave(graphName)
   }
 }
