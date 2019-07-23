@@ -19,12 +19,13 @@ for(projectOne in projects){
       # filter(project == c("la4j", "jopt-simple")) %>%
       mutate(metric = (coveredTax - faultsTax)) %>%
       # filter(metric <= 0 ) %>%
-      ggplot(aes(y = metric, x = test)) +
+      ggplot(aes(y = faults, x = testName)) +
       geom_line(group=1)+
-      geom_line(aes(y=median(metric)), group=1, color="red") + 
-      ylab("covered - faults")+
+      ylab("covered")+
       xlab("test name")+
-      facet_wrap(~project, scales = ("free_x"))
+      facet_wrap(~version, scales = "free")
+    graphName <- paste(c("graphics/apfd_mspreading_covered_vs_faults/", projectOne, "_", covOne, "_faults.pdf"), sep="", collapse = "")
+    ggsave(graphName)
   }
 }
 
