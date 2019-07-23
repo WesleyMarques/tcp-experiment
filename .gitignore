@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+./data/**/coverage/**/*_output
+.metadata/
+./**/**/**/*.pyc
+.recommenders
+.metadata
+.metadata/

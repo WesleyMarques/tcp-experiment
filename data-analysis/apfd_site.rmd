@@ -1,0 +1,71 @@
+---
+title: "An Empirical Study on the Spreading of Fault Revealing Test Cases in Prioritized Suites"
+author: "Wesley N. M. Torres, Everton L.G. Alves, Patrícia D. L. Machado"
+date: ""
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+require(jsonlite)
+require(dplyr)
+require(ggplot2)
+require(readr)
+require(coin)
+library(resample)
+
+require(rcompanion)
+require(multcompView)
+library(FSA)
+require(DescTools)
+
+require(tibble)
+library(broom)
+library(cluster)
+library(ggdendro)
+require(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
+require(PMCMR)
+
+colorder <- c( "blue", "green", "orange", "red", "brown")
+algorithm_list <- c("Search-Based-statement","Search-Based-branch","Search-Based-method", "Total-statement","Total-method","Total-branch","Additional-statement","Additional-method","Additional-branch","ART-statement","ART-method","ART-branch")
+
+data_apfd <- read_csv("data/dataframe_apfd.data")
+data_apfd$algorithm = factor(data_apfd$algorithm, levels=algorithm_list)
+```
+
+## APFD results using boxplot:  
+
+
+```{r pressure, echo=FALSE,message=FALSE}
+data_apfd %>%
+  filter(covLevel == "statement") %>%
+  mutate(project = paste(project,"(stmt)", sep="")) %>%
+  ggplot(aes(y=apfd, fill=algorithm)) +
+  geom_boxplot(aes(x = version),outlier.colour="red")+
+  ylab("APFD statement")+
+  xlab("Versions")+
+  scale_fill_manual(values=colorder,name="Algorithms")+
+  facet_wrap(~project, scales = "free")
+
+data_apfd %>%
+  filter(covLevel == "method") %>%
+  mutate(project = paste(project,"(method-cov)", sep="")) %>%
+  ggplot(aes(y=apfd, fill=algorithm)) +
+  geom_boxplot(aes(x = version),outlier.colour="red")+
+  ylab("APFD method")+
+  xlab("Versions")+
+  scale_fill_manual(values=colorder,name="Algorithms")+
+  facet_wrap(~project, scales = "free")
+
+data_apfd %>%
+  filter(covLevel == "branch") %>%
+  mutate(project = paste(project,"(branch-cov)", sep="")) %>%
+  ggplot(aes(y=apfd, fill=algorithm)) +
+  geom_boxplot(aes(x = version),outlier.colour="red")+
+  ylab("APFD branch")+
+  xlab("Versions")+
+  scale_fill_manual(values=colorder,name="Algorithms")+
+  facet_wrap(~project, scales = "free")
+
+pearson.test(data_apfd$apfd, adjust = F)
+qqnorm(data_apfd$apfd)
+```
