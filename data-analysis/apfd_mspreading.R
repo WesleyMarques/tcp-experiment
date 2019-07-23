@@ -13,17 +13,16 @@ data_apfd <- data_apfd %>%
 data_mSpreading <- data_mSpreading %>%
   mutate(metricName = "meanSpreading") %>%
   mutate(metric = 1-metric)
-
-for(project in projects){
+for(projectOne in projects){
   data_apfd_project <- data_apfd %>%
-    filter(project == projects)
+    filter(project == projectOne)
   data_mSpreading_project <- data_mSpreading %>%
-    filter(project == projects)
-  for(cov in coverage){
+    filter(project == projectOne)
+  for(covOne in coverage){
     data_apfd_project_cov <- data_apfd_project %>%
-      filter(covLevel == cov)
+      filter(covLevel == covOne)
     data_mSpreading_project_cov <- data_mSpreading_project %>%
-      filter(covLevel == cov)
+      filter(covLevel == covOne)
     data_full = data.frame(rbind(as.matrix(data_apfd_project_cov), as.matrix(data_mSpreading_project_cov)))
     data_full %>%
       mutate(metric = as.numeric(as.character(metric))) %>%
@@ -37,12 +36,24 @@ for(project in projects){
       # scale_y_discrete(breaks=c(0,1), labels=c(0,1))+
       scale_x_discrete(breaks=c(0,1), labels=c(0,1))+
       facet_wrap(~limiar, scales = "free")
-    graphName <- paste(c("graphics/apfd_mspreading_line/", project, "_", cov, ".pdf"), sep="", collapse = "")
+    graphName <- paste(c("graphics/apfd_mspreading_line2/", projectOne, "_", covOne, ".pdf"), sep="", collapse = "")
     ggsave(graphName)
   }
 }
 
-data_full %>%
+data_apfd %>%
+  mutate(algorithm = str_replace_all(algorithm, "GreedyAdditionalSimilarity", "GAS")) %>%
+  # mutate(algorithm = str_replace_all(algorithm, "statement", "stmt")) %>%
+  ggplot(aes(y=metric)) +
+  aes(colour = factor(metricName),group = metricName)+
+  geom_boxplot(aes(x = algorithm),outlier.colour="red")+
+  ylab("APFD")+
+  xlab("Versions")+
+  theme(axis.text.x = element_blank())+
+  facet_wrap(~limiar, scales = "free")
+
+
+data_apfd %>%
   mutate(algorithm = str_replace_all(algorithm, "GreedyAdditionalSimilarity", "GAS")) %>%
   # mutate(algorithm = str_replace_all(algorithm, "statement", "stmt")) %>%
   ggplot(aes(y=metric)) +
