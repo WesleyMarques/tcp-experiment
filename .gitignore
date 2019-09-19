@@ -8,3 +8,4 @@
 .recommenders
 .metadata
 .metadata/
+*.data
