@@ -9,7 +9,7 @@ import datetime
 from MyThread import myThread
 import ssh_client
 
-projects = [ "scribe-java", "jasmine-maven-plugin", "java-apns", "jopt-simple", "metrics-core", "vraptor", "la4j", "assertj-core"]
+projects = [ "vraptor", "la4j", "assertj-core"]
 covLevel = ["statement", "method", "branch"]
 
 PATH = os.getcwd()
@@ -43,7 +43,7 @@ def createPackages():
             versions = open(PATH+"/data/"+project+"/coverage/sorted_version.txt")
             for version in versions:
                 hostConfig = {
-                    "name": "monogatari"
+                    "name": "friends"
                 }
                 version = version.replace("\n", "")
                 currentPackagePath = buildPackageName(project, coverageLevel, version)

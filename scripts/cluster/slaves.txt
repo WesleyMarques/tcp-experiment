@@ -7,7 +7,6 @@ community,150.156.98.13
 revolution,150.156.98.23
 sherlock,150.156.98.66
 vikings,150.156.98.32
-friends,150.156.98.95
 lost,150.156.98.27
 suits,150.156.98.33
 house,150.156.98.15
