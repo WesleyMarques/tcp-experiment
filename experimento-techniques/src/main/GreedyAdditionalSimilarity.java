@@ -1,9 +1,5 @@
 package main;
 
-/*
- * Use Greedy Additional Algorithm for Test Case Prioritization.
- * Yafeng.Lu@cs.utdallas.edu
- */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
